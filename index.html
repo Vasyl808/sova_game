@@ -1,51 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="Crypto Owl - A fun Bitcoin collecting game. Fly through obstacles and collect bitcoins!">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Crypto Owl - A fun Bitcoin collecting game. Fly through obstacles and collect bitcoins!"
+    />
     <title>Crypto Owl - Bitcoin Collector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="stars" id="starsContainer"></div>
-    
+
     <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-        
+      <canvas id="gameCanvas"></canvas>
+
         <div id="currentScore" style="display: none;">
-            🪙 <span id="scoreValue">0</span>
+            <div class="score-row">
+                <div class="score-item">
+                    <span class="score-icon">🏆</span> <span id="scoreValue">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="ui-coin">₿</span> <span id="coinsValue">0</span>
+                </div>
+            </div>
+            <div class="lives-row">
+                <div id="livesContainer">❤️❤️❤️</div>
+            </div>
         </div>
 
-        <div id="startScreen">
-            <h1>🦉 CRYPTO OWL</h1>
-            <p class="subtitle">BITCOIN COLLECTOR</p>
-            <div class="bitcoin-icon">₿</div>
-            <button id="startBtn">START GAME</button>
-            <div class="high-score" id="highScoreStart">
-                Best Score: <span id="highScoreValue">0</span> ₿
-            </div>
-            <p class="instructions">
-                🖱️ Click or Tap to fly<br>
-                🪙 Collect Bitcoins<br>
-                🚫 Avoid obstacles
-            </p>
+      <div id="startScreen">
+        <h1>🦉 CRYPTO OWL</h1>
+        <p class="subtitle">BITCOIN COLLECTOR</p>
+        <div class="high-score" id="highScoreStart">
+          <p>Best Score: <span id="highScoreValue">0</span> 🏆 </p>
+          <p>Total Coins:  <span id="totalCoinsValue">0</span> <span class="ui-coin">₿</span> </p>
         </div>
+        <button id="startBtn">START GAME</button>
+        <p class="instructions">
+          🖱️ Click or Tap to fly<br />
+          <span class="ui-coin">₿</span> Collect Bitcoins<br />
+          🚫 Avoid obstacles
+        </p>
+      </div>
 
-        <div id="gameOverScreen" style="display: none;">
-            <h1>GAME OVER!</h1>
-            <div class="bitcoin-icon">₿</div>
-            <div class="score-display">
-                Score: <span id="finalScore">0</span> ₿
-            </div>
-            <div class="high-score" id="highScoreEnd">
-                Best Score: <span id="highScoreValueEnd">0</span> ₿
-            </div>
-            <button id="restartBtn">Play Again</button>
+      <div id="gameOverScreen" style="display: none">
+        <h1>GAME OVER!</h1>
+        <div class="score-display">
+          <p>Score: <span id="finalScore">0</span> 🏆 </p>
+          <p>Coins: <span id="finalCoins">0</span> <span class="ui-coin">₿</span></p>
         </div>
+        <div class="high-score" id="highScoreEnd">
+          <p>Best Score: <span id="highScoreValueEnd">0</span> 🏆 </p>
+          <p>Total: <span id="totalCoinsValueEnd">0</span> <span class="ui-coin">₿</span> </p>
+        </div>
+        <button id="restartBtn">Play Again</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
