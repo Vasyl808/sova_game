@@ -1,0 +1,343 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    touch-action: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    touch-action: none;
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+#startScreen, #gameOverScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: clamp(30px, 5vw, 50px);
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3),
+                inset 0 0 30px rgba(255,255,255,0.1);
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideIn 0.5s ease-out;
+    z-index: 100;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+h1 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd976 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: clamp(32px, 8vw, 64px);
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 0 0 30px rgba(255,255,255,0.3);
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)); }
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(16px, 3vw, 22px);
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+button {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: clamp(14px, 2.5vh, 20px) clamp(35px, 6vw, 55px);
+    font-size: clamp(18px, 3.5vw, 24px);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4),
+                inset 0 0 20px rgba(255,255,255,0.1);
+    font-weight: 700;
+    margin: 10px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden;
+    min-height: 48px;
+    min-width: 120px;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+@media (hover: hover) {
+    button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 12px 35px rgba(245, 87, 108, 0.6),
+                    inset 0 0 30px rgba(255,255,255,0.2);
+    }
+}
+
+.score-display {
+    font-size: clamp(20px, 4vw, 32px);
+    color: white;
+    margin: 20px 0;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+.bitcoin-icon {
+    font-size: clamp(40px, 8vw, 64px);
+    margin: 15px 0;
+    animation: float 3s ease-in-out infinite, rotate 4s linear infinite;
+    display: inline-block;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(180deg); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.instructions {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: clamp(14px, 2.5vw, 18px);
+    margin-top: 25px;
+    line-height: 1.8;
+    font-weight: 400;
+}
+
+.high-score {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 20px 0;
+    font-size: clamp(16px, 3vw, 20px);
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+#currentScore {
+    position: absolute;
+    top: clamp(15px, 3vh, 25px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: clamp(10px, 2vh, 15px) clamp(20px, 4vw, 35px);
+    border-radius: 25px;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    #startScreen, #gameOverScreen {
+        padding: clamp(25px, 4vw, 40px) clamp(20px, 3vw, 30px);
+        max-width: 95%;
+    }
+    
+    .instructions {
+        font-size: clamp(12px, 2.5vw, 16px);
+        margin-top: 20px;
+    }
+    
+    button {
+        min-height: 52px;
+        min-width: 140px;
+        font-size: clamp(16px, 4vw, 22px);
+    }
+}
+
+@media (max-width: 480px) {
+    #startScreen, #gameOverScreen {
+        padding: 20px 15px;
+    }
+    
+    h1 {
+        font-size: clamp(28px, 10vw, 48px);
+        margin-bottom: 8px;
+    }
+    
+    .subtitle {
+        font-size: clamp(14px, 4vw, 18px);
+        margin-bottom: 20px;
+        letter-spacing: 1.5px;
+    }
+    
+    .bitcoin-icon {
+        font-size: clamp(36px, 10vw, 52px);
+        margin: 10px 0;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    #gameCanvas {
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+    
+    #startScreen, #gameOverScreen {
+        padding: clamp(35px, 4vw, 55px);
+    }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+    #startScreen, #gameOverScreen {
+        padding: 15px 25px;
+        max-height: 95vh;
+    }
+    
+    h1 {
+        font-size: clamp(24px, 6vh, 40px);
+        margin-bottom: 5px;
+    }
+    
+    .subtitle {
+        font-size: clamp(12px, 2.5vh, 16px);
+        margin-bottom: 15px;
+    }
+    
+    .bitcoin-icon {
+        font-size: clamp(28px, 6vh, 40px);
+        margin: 8px 0;
+    }
+    
+    button {
+        padding: clamp(10px, 2vh, 16px) clamp(30px, 5vw, 45px);
+        font-size: clamp(14px, 3vh, 20px);
+        min-height: 44px;
+        margin: 8px;
+    }
+    
+    .instructions {
+        font-size: clamp(11px, 2vh, 14px);
+        margin-top: 15px;
+        line-height: 1.6;
+    }
+    
+    #currentScore {
+        top: 10px;
+        padding: 8px 20px;
+        font-size: clamp(16px, 3.5vh, 24px);
+    }
+}
+
+@media (min-width: 1025px) {
+    #gameCanvas {
+        max-width: 800px;
+        max-height: 600px;
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+    body {
+        height: -webkit-fill-available;
+    }
+    
+    #gameContainer {
+        height: -webkit-fill-available;
+    }
+}
