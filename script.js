@@ -282,43 +282,82 @@ let frameCount = 0;
 
 function drawObstacles() {
   obstacles.forEach((obs) => {
-    const topGradient = ctx.createLinearGradient(
+    const columnGradient = ctx.createLinearGradient(
       obs.x,
       0,
       obs.x + obstacleWidth,
       0,
     );
-    topGradient.addColorStop(0, "#2d5016");
-    topGradient.addColorStop(0.5, "#3a6b1f");
-    topGradient.addColorStop(1, "#2d5016");
-    ctx.fillStyle = topGradient;
-    ctx.fillRect(obs.x, 0, obstacleWidth, obs.top);
-
-    ctx.strokeStyle = "#1a3d0a";
-    ctx.lineWidth = 3;
-    ctx.strokeRect(obs.x, 0, obstacleWidth, obs.top);
-
-    ctx.fillStyle = "#1a3d0a";
-    for (let i = 20; i < obs.top; i += 30) {
-      ctx.fillRect(obs.x + 5, i, obstacleWidth - 10, 3);
+    columnGradient.addColorStop(0, "#2d5016");
+    columnGradient.addColorStop(0.5, "#3a6b1f");
+    columnGradient.addColorStop(1, "#2d5016");
+    
+    // Top column (above gap)
+    if (obs.top > 20) {
+      // Column capital (decorative top)
+      const capitalHeight = 15;
+      const capitalWidth = obstacleWidth + 8;
+      ctx.fillStyle = "#3a6b1f";
+      ctx.fillRect(obs.x - 4, obs.top - capitalHeight, capitalWidth, capitalHeight);
+      ctx.strokeStyle = "#1a3d0a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(obs.x - 4, obs.top - capitalHeight, capitalWidth, capitalHeight);
+      
+      // Column shaft with vertical fluting
+      ctx.fillStyle = columnGradient;
+      ctx.fillRect(obs.x, 0, obstacleWidth, obs.top - capitalHeight);
+      
+      // Vertical fluting lines (instead of horizontal stripes)
+      ctx.strokeStyle = "rgba(26, 61, 10, 0.3)";
+      ctx.lineWidth = 1.5;
+      const fluteCount = 5;
+      for (let i = 0; i < fluteCount; i++) {
+        const flutingX = obs.x + (obstacleWidth / fluteCount) * i + (obstacleWidth / fluteCount / 2);
+        ctx.beginPath();
+        ctx.moveTo(flutingX, 0);
+        ctx.lineTo(flutingX, obs.top - capitalHeight);
+        ctx.stroke();
+      }
+      
+      // Column outline
+      ctx.strokeStyle = "#1a3d0a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(obs.x, 0, obstacleWidth, obs.top - capitalHeight);
     }
-
-    ctx.fillStyle = topGradient;
-    ctx.fillRect(
-      obs.x,
-      obs.top + gap,
-      obstacleWidth,
-      canvas.height - obs.top - gap,
-    );
-    ctx.strokeRect(
-      obs.x,
-      obs.top + gap,
-      obstacleWidth,
-      canvas.height - obs.top - gap,
-    );
-
-    for (let i = obs.top + gap + 20; i < canvas.height; i += 30) {
-      ctx.fillRect(obs.x + 5, i, obstacleWidth - 10, 3);
+    
+    // Bottom column (below gap)
+    const bottomStart = obs.top + gap;
+    const bottomHeight = canvas.height - bottomStart;
+    
+    if (bottomHeight > 20) {
+      // Column base (decorative bottom)
+      const baseHeight = 15;
+      ctx.fillStyle = "#3a6b1f";
+      ctx.fillRect(obs.x - 4, bottomStart, obstacleWidth + 8, baseHeight);
+      ctx.strokeStyle = "#1a3d0a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(obs.x - 4, bottomStart, obstacleWidth + 8, baseHeight);
+      
+      // Column shaft with vertical fluting
+      ctx.fillStyle = columnGradient;
+      ctx.fillRect(obs.x, bottomStart + baseHeight, obstacleWidth, bottomHeight - baseHeight);
+      
+      // Vertical fluting lines
+      ctx.strokeStyle = "rgba(26, 61, 10, 0.3)";
+      ctx.lineWidth = 1.5;
+      const fluteCount = 5;
+      for (let i = 0; i < fluteCount; i++) {
+        const flutingX = obs.x + (obstacleWidth / fluteCount) * i + (obstacleWidth / fluteCount / 2);
+        ctx.beginPath();
+        ctx.moveTo(flutingX, bottomStart + baseHeight);
+        ctx.lineTo(flutingX, canvas.height);
+        ctx.stroke();
+      }
+      
+      // Column outline
+      ctx.strokeStyle = "#1a3d0a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(obs.x, bottomStart + baseHeight, obstacleWidth, bottomHeight - baseHeight);
     }
   });
 }
@@ -418,7 +457,7 @@ function update(timeScale) {
   // 120 frames at 60fps is ~2000ms.
   if (obstacleTimer > 2000) {
     obstacleTimer = 0;
-    const topHeight = Math.random() * (canvas.height - gap - 100) + 50;
+    const topHeight = Math.random() * (canvas.height - gap - 40) + 20;
     const newObstacle = {
       x: canvas.width,
       top: topHeight,
