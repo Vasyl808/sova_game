@@ -16,21 +16,28 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
-    const maxWidth = 800;
-    const maxHeight = 600;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    const padding = 20;
-    const availableWidth = windowWidth - padding * 2;
-    const availableHeight = windowHeight - padding * 2;
-    
-    if (availableWidth / availableHeight > maxWidth / maxHeight) {
-        canvas.height = Math.min(availableHeight, maxHeight);
-        canvas.width = canvas.height * (maxWidth / maxHeight);
+    // Mobile/Portrait check (using 768px as breakpoint, same as CSS)
+    if (windowWidth <= 768) {
+        canvas.width = windowWidth;
+        canvas.height = windowHeight;
     } else {
-        canvas.width = Math.min(availableWidth, maxWidth);
-        canvas.height = canvas.width * (maxHeight / maxWidth);
+        const maxWidth = 800;
+        const maxHeight = 600;
+        
+        const padding = 20;
+        const availableWidth = windowWidth - padding * 2;
+        const availableHeight = windowHeight - padding * 2;
+        
+        if (availableWidth / availableHeight > maxWidth / maxHeight) {
+            canvas.height = Math.min(availableHeight, maxHeight);
+            canvas.width = canvas.height * (maxWidth / maxHeight);
+        } else {
+            canvas.width = Math.min(availableWidth, maxWidth);
+            canvas.height = canvas.width * (maxHeight / maxHeight);
+        }
     }
 }
 
@@ -463,10 +470,19 @@ function jump() {
     }
 }
 
-canvas.addEventListener('click', jump);
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    jump();
+document.addEventListener('click', (e) => {
+    // Prevent double jump if clicking a button that also triggers an action
+    // But allow start buttons to work naturally
+    if (e.target.tagName !== 'BUTTON') {
+        jump();
+    }
+});
+
+document.addEventListener('touchstart', (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+        e.preventDefault(); // Prevent scrolling
+        jump();
+    }
 }, { passive: false });
 
 document.addEventListener('keydown', (e) => {
