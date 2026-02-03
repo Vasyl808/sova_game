@@ -473,7 +473,7 @@ function update(timeScale) {
                 itemY = newObstacle.top + gap / 2;
             } else {
                 itemX = canvas.width - 120; 
-                itemY = Math.random() * (canvas.height - 200) + 100;
+                itemY = Math.random() * (canvas.height - 300) + 150;
             }
             
             // 10% chance for a heart if lives < maxLives
